@@ -1,10 +1,16 @@
 # Django settings for FBTserver project.
+import os.path
+
+PROJECT_ROOT = os.path.abspath(
+    os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                 os.pardir))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+ALIVE_ON_PRODUCTION = False
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Jinliang Zhu', 'zhujinlianghust@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -29,7 +35,7 @@ ALLOWED_HOSTS = []
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Asia/Shanghai'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -72,6 +78,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(PROJECT_ROOT, 'static'),
 )
 
 # List of finder classes that know how to find static files in
@@ -121,9 +128,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+
+    # 'south',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -153,4 +162,12 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+
+
+TEMPLATE_CONTEXT_PROCESSORS = {
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
 }
