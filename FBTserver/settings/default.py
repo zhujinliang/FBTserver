@@ -134,6 +134,10 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 
     'south',
+
+    # FBT apps
+    'FBTserver.apps.account',
+    'FBTserver.apps.utils',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -172,3 +176,5 @@ TEMPLATE_CONTEXT_PROCESSORS = {
     'django.core.context_processors.media',
     'django.core.context_processors.static',
 }
+
+VERSION = '0.1.0'

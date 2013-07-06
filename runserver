@@ -8,7 +8,7 @@ DJANGO_SETTINGS_MODULE=FBTserver.settings.local
 ARG_PYTHONPATH="--pythonpath=$PYTHONPATH"
 ARG_SETTINGS="--settings=$DJANGO_SETTINGS_MODULE"
 
-COMMANDS="shell runserver validate"
+COMMANDS="shell runserver validate syncdb"
 
 
 function runserver_proc()
@@ -46,6 +46,11 @@ function run_command()
 function validate_proc()
 {
     $DJANGO_ADMIN validate $ARG_SETTINGS $ARG_PYTHONPATH
+}
+
+function syncdb_proc()
+{
+    $DJANGO_ADMIN syncdb $ARG_SETTINGS $ARG_PYTHONPATH
 }
 
 function usage()

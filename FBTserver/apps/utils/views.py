@@ -40,11 +40,11 @@ class AjaxResponseMixin(object):
         }
         return HttpResponse(simplejson.dumps(context),
                             content_type='application/json')
-    
+
     def ajax_response(self, context=None, **kwargs):
         if context is None:
             context = {}
         context.update(kwargs)
-        self.render_to_json(context)
+        return self.render_to_json(context)
 
 

@@ -8,18 +8,29 @@ from django.contrib.auth.models import User
 from django.views.generic.edit import FormView
 
 
-from apps.utils.views import AjaxResponseCode
-from apps.utils.views import AjaxResponseMixin
-from apps.utils.decorators import ajax_login_required
+from FBTserver.apps.utils.views import AjaxResponseCode
+from FBTserver.apps.utils.views import AjaxResponseMixin
+from FBTserver.apps.utils.decorators import ajax_login_required
 
 
 __all__ = [
     'RegisterView',
     'LoginView',
     'LogoutView',
+    'SetPasswordView'
 ]
 
-class RegisterView(FormView, AjaxResponseMixin):
+class BaseFormView(FormView):
+
+    def http_method_not_allowed(self, request, *args, **kwargs):
+        allowed_methods = [m for m in self.http_method_names if hasattr(self, m)]
+        error_msg = 'Method Not Allowed (%s): %s' % (request.method, request.path)
+        self.update_errors(error_msg)
+        context = {'allowed_methods': allowed_methods}
+        return self.ajax_response(context)
+
+
+class RegisterView(BaseFormView, AjaxResponseMixin):
     ''' User register view.'''
 
     http_method_names = ['post']
@@ -37,7 +48,7 @@ class RegisterView(FormView, AjaxResponseMixin):
         return self.ajax_response()
 
 
-class LoginView(FormView, AjaxResponseMixin):
+class LoginView(BaseFormView, AjaxResponseMixin):
     ''' User login view.'''
 
     http_method_names = ['post']
@@ -52,14 +63,15 @@ class LoginView(FormView, AjaxResponseMixin):
         return self.ajax_response()
 
 
-class LogoutView(FormView, AjaxResponseMixin):
+class LogoutView(BaseFormView, AjaxResponseMixin):
     ''' User logout view.'''
 
     def get(self, request, *args, **kwargs):
         logout(request)
         return self.ajax_response()
 
-class SetPasswordView(FormView, AjaxResponseMixin):
+
+class SetPasswordView(BaseFormView, AjaxResponseMixin):
     ''' User set password when user forget the password.'''
 
     http_method_names = ['post']

@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.utils import simplejson
 from functools import wraps
 
-from apps.utils.views import AjaxResponseCode
+from FBTserver.apps.utils.views import AjaxResponseCode
 
         
 def ajax_login_required(func):
