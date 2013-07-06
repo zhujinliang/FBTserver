@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# Before using django-admin.py, virtualenv should be activate.
+DJANGO_ADMIN=django-admin.py
+PYTHONPATH=`pwd`
+DJANGO_SETTINGS_MODULE=FBTserver.settings.local
+
+ARG_PYTHONPATH="--pythonpath=$PYTHONPATH"
+ARG_SETTINGS="--settings=$DJANGO_SETTINGS_MODULE"
+
+COMMANDS="shell runserver validate"
+
+
+function runserver_proc()
+{
+    $DJANGO_ADMIN runserver $ARG_SETTINGS $ARG_PYTHONPATH
+}
+
+function shell_proc()
+{
+    $DJANGO_ADMIN shell $ARG_SETTINGS $ARG_PYTHONPATH
+}
+
+
+function run_command()
+{
+    command_name="$1"
+    found=false
+    for command in $COMMANDS
+    do
+        if [ "$command" == "$command_name" ]
+        then
+            proc_name="${command}_proc"
+            $proc_name $2
+            found=true
+        fi
+    done
+
+    if [ ! $found ]
+    then
+        echo "Unknown command. runserver --help to get usage."
+        exit 1
+    fi
+}
+
+function validate_proc()
+{
+    $DJANGO_ADMIN validate $ARG_SETTINGS $ARG_PYTHONPATH
+}
+
+function usage()
+{
+    echo
+    echo "runserver [$COMMANDS]"
+}
+
+case $1 in
+    -h | --help | help)
+        usage ;;
+    *)
+        if [ -n "$1" ]
+        then
+            run_command $1 $2
+        else
+            usage
+        fi
+        ;;
+esac

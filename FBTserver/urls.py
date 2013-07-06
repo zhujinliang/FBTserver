@@ -14,5 +14,9 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += pattern('',
+    url(r'^account/', inlcude('apps.account.urls'))
+)
+
+urlpatterns += pattern('',
     url(r'^admin/', include(admin.site.urls)),
 )

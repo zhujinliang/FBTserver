@@ -5,6 +5,7 @@ from django.utils import simplejson
 
 
 __all__ = [
+    'AjaxResponseCode',
     'AjaxResponseMixin',        
 ]
 
@@ -18,14 +19,14 @@ class AjaxResponseCode:
 class AjaxResponseMixin(object):
 
     errors = None
-    result_code = AjaxResponseCode.success
+    status_code = AjaxResponseCode.success
 
     def update_errors(self, msg, errors=None):
         '''
         msg: an error message
         errors: a dictionary of errors, e.g., form.errors
         '''
-        self.result_code = AjaxResponseCode.error
+        self.status_code = AjaxResponseCode.error
         if errors is not None:
             self.errors = errors
         else:
@@ -33,7 +34,7 @@ class AjaxResponseMixin(object):
 
     def render_to_json(self, data):
         context = {
-            'rc': self.result_code,
+            'status': self.status_code,
             'msg': self.errors,
             'data': data
         }
